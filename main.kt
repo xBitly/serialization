@@ -53,11 +53,12 @@ fun <T: Any> serialize(setterClass: T, json: String): T{
 
     var flag = false
     for (i in parsJson.indices){
-        if (parsJson[i] == '[') flag = true
-        if (parsJson[i] == ']') flag = false
-        if (parsJson[i] == ',' && !flag){
+        if (parsJson[i] == '[')
+            flag = true
+        if (parsJson[i] == ']')
+            flag = false
+        if (parsJson[i] == ',' && parsJson[i-1] != '\\' && !flag)
             parsJson = parsJson.substring(0, i) + ";" + parsJson.substring(i + 1)
-        }
     }
 
     parsJson = parsJson.replace("[", "").replace("]", "")
@@ -94,7 +95,7 @@ fun main() {
 
     */
 
-    val json = "{\n" +
+    val json = "    {\n" +
             "        \"id\": 1,\n" +
             "        \"name\": \"Andrey\",\n" +
             "        \"surname\": \"Avdeev\",\n" +
@@ -106,9 +107,9 @@ fun main() {
             "            \"Java\",\n" +
             "            \"Basketball\"\n" +
             "        ]\n" +
-            "    }"
-    println(json + "\n")
+            "    }\n"
+    println(json)
 
     person = serialize(Person(), json)
-    println(person.toString() + "\n")
+    println(person.toString())
 }
